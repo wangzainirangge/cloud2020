@@ -1,0 +1,9 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: cloud-order-client
+  cloud:
+    zookeeper:
+      connect-string: localhost:2181
