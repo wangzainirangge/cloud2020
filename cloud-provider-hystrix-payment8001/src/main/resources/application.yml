@@ -1,0 +1,36 @@
+server:
+  port: 8001
+management:
+  #  health:
+  #    mail:
+  #      enabled: false
+  server:
+    port: 8001
+
+spring:
+  application:
+    name: cloud-payment-hystrix-service
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: org.gjt.mm.mysql.Driver
+    url: jdbc:mysql://localhost:3306/cloud2020?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 111111
+
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: springcloud.entities    #所有Entity别名类所在的包
+
+eureka:
+  client:
+    #是否要将自己注册经EurekaServer 默认true
+    register-with-eureka: true
+    #是否从EurekaServer抓取已有的注册信息，默认true
+    fetch-registry: true
+    service-url:
+      #设置与Eureka Server交互的地址查询服务和注册服务都需要依赖这个短地址
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+  instance:
+    instance-id: payment8001
+    prefer-ip-address: true #访问路径可以显示ip地址

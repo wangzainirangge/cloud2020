@@ -1,6 +1,8 @@
-package com.wangzai.springcloud8002.controller;
+package com.wangzai.springcloudHY8001.controller;
 
-import com.wangzai.springcloud8002.service.PaymentService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.wangzai.springcloudHY8001.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
@@ -11,7 +13,6 @@ import springcloud.entities.Payment;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @Slf4j
@@ -63,14 +64,21 @@ public class PaymentController {
         return this.discoveryClient;
     }
 
+    @HystrixCommand(fallbackMethod = "paymentFeignTimeoutHandler",commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",value = "5000")
+    })
     @GetMapping(value = "/feign/timeout")
     public String paymentFeignTimeout(){
-        try {
-            TimeUnit.SECONDS.sleep(3);
+        /*try {
+            TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
         return serverPort;
+    }
+
+    public String paymentFeignTimeoutHandler(){
+        return "服务熔断服务端";
     }
 
 }
