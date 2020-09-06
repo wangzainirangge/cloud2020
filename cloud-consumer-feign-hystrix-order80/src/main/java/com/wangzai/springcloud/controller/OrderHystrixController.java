@@ -3,7 +3,7 @@ package com.wangzai.springcloud.controller;
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import com.wangzai.springcloud.service.PaymentFeignService;
+import com.wangzai.springcloud.service.PaymentHystrixService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,10 +19,10 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping(value = "/consumer")
 @Slf4j
 @DefaultProperties(defaultFallback = "paymentFallbackMethod")
-public class OrderFeignController {
+public class OrderHystrixController {
 
     @Resource
-    private PaymentFeignService paymentFeignService;
+    private PaymentHystrixService paymentFeignService;
 
     @GetMapping(value = "/create")
     public CommonResult<Payment> create(Payment payment){
@@ -50,7 +50,7 @@ public class OrderFeignController {
     }
 
     public String paymentFeignTimeoutHandler(){
-        return "服务熔断客户端";
+        return "服务降级客户端";
     }
 
     //全局fallback方法

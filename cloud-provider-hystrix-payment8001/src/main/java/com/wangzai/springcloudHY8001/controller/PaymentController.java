@@ -1,7 +1,5 @@
 package com.wangzai.springcloudHY8001.controller;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.wangzai.springcloudHY8001.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +37,7 @@ public class PaymentController {
             return new CommonResult(400,"插入数据库失败,serverPort:" + serverPort);
         }
     }
-
+    
     @GetMapping(value = "/getPaymentById/{id}")
     public CommonResult getPaymentById(@PathVariable("id") Long id){
         Payment payment = paymentService.getPaymentById(id);
@@ -64,21 +62,15 @@ public class PaymentController {
         return this.discoveryClient;
     }
 
-    @HystrixCommand(fallbackMethod = "paymentFeignTimeoutHandler",commandProperties = {
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",value = "5000")
-    })
+
     @GetMapping(value = "/feign/timeout")
     public String paymentFeignTimeout(){
-        /*try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-        return serverPort;
+        return paymentService.paymentFeignTimeout();
     }
 
-    public String paymentFeignTimeoutHandler(){
-        return "服务熔断服务端";
+    @GetMapping(value = "/circuit/{id}")
+    public String getPaymentByIdBreaker(@PathVariable("id") Long id){
+        return paymentService.getPaymentByIdBreaker(id);
     }
 
 }

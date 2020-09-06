@@ -18,6 +18,7 @@ eureka:
     instance-id: client80
     prefer-ip-address: true #访问路径可以显示ip地址
 
+#设置openfeign客户端超时时间
 ribbon:
   #建立连接最大时间
   ReadTimeout: 5000

@@ -8,12 +8,13 @@ spring:
 eureka:
   client:
     #是否要将自己注册经EurekaServer 默认true
-    register-with-eureka: true
+    register-with-eureka: false
     #是否从EurekaServer抓取已有的注册信息，默认true
     fetch-registry: true
     service-url:
       #设置与Eureka Server交互的地址查询服务和注册服务都需要依赖这个短地址
-      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+      defaultZone: http://eureka7001.com:7001/eureka
+      #defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
   instance:
     instance-id: client80
     prefer-ip-address: true #访问路径可以显示ip地址
